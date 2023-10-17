@@ -1,43 +1,44 @@
-import gql from 'graphql-tag'
-import Link from 'next/link'
-import { useQuery } from '@apollo/client'
-import { initializeApollo } from '../apollo/client'
+import gql from "graphql-tag";
+import { initializeApollo } from "../apollo/client";
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  ReactPortal,
+  PromiseLikeOfReactNode,
+} from "react";
+import Todos from "../components/Todos";
 
-const ViewerQuery = gql`
-  query ViewerQuery {
-    viewer {
-      id
-      name
+const TodoQuery = gql`
+  query {
+    todos {
+      _id
+      text
       status
     }
   }
-`
+`;
 
 const Index = () => {
-  const {
-    data: { viewer },
-  } = useQuery(ViewerQuery)
-
   return (
     <div>
-      You're signed in as {viewer.name} and you're {viewer.status} goto{' '}
-      <Link href="/about">static</Link> page.
+      <Todos />
     </div>
-  )
-}
+  );
+};
 
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
+// export async function getStaticProps() {
+//   const apolloClient = initializeApollo();
 
-  await apolloClient.query({
-    query: ViewerQuery,
-  })
+//   await apolloClient.query({
+//     query: TodoQuery,
+//   });
 
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
-  }
-}
+//   return {
+//     props: {
+//       initialApolloState: apolloClient.cache.extract(),
+//     },
+//   };
+// }
 
-export default Index
+export default Index;
