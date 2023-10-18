@@ -3,14 +3,21 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@apollo/server": "^4.1.1",
     "@as-integrations/next": "^1.1.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@graphql-tools/schema": "^9.0.9",
+    "@mui/icons-material": "^5.14.14",
+    "@mui/material": "^5.14.14",
     "deepmerge": "4.2.2",
+    "eslint": "^8.51.0",
+    "eslint-config-next": "^13.5.5",
     "graphql": "^16.6.0",
     "mongoose": "^7.6.2",
     "next": "latest",

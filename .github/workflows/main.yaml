@@ -8,13 +8,6 @@ jobs:
     steps:
       - name: Hello Github Actions
         run: echo Hello Github Actions!
-      # - name: Echo env
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     echo "Github Token ${GITHUB_TOKEN}"
-      #     echo "Github Ref ${GITHUB_REF}"
-      #     echo "Github SHA ${GITHUB_SHA}"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Use Node.js
@@ -24,8 +17,8 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm install
-      # - name: Lint
-      #   run: npm run lint
+      - name: Lint
+        run: npm run lint
       # - name: Test
       #   run: npm run test
       - name: Build

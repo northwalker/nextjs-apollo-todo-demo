@@ -1,10 +1,3 @@
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-  PromiseLikeOfReactNode,
-} from "react";
 import dbConnect from "../lib/dbConnect";
 import gql from "graphql-tag";
 import { initializeApollo } from "../apollo/client";
@@ -30,7 +23,7 @@ const Index = () => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   await dbConnect();
 
   const apolloClient = initializeApollo();
