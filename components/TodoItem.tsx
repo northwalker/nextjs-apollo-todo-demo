@@ -42,61 +42,67 @@ const TodoItem = ({
   const [isEditing, setIsEdting] = useState(false);
   const [editingText, setEditingText] = useState("");
 
-  const handleTodoEdited = useCallback(async () => {
-    setIsSubmitting(true);
-    const newText = editingText.trim();
-    if (newText && todo.text !== newText) {
-      await handleUpdateTodo({
-        ...todo,
-        text: newText,
-      });
-    }
-    setIsEdting(false);
-    setEditingText("");
-    setIsSubmitting(false);
-  }, [editingText, todo, handleUpdateTodo]);
+  const handleEditTodo = useCallback(
+    async (e: { preventDefault: () => void }) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      const newText = editingText.trim();
+      if (newText && todo.text !== newText) {
+        await handleUpdateTodo({
+          ...todo,
+          text: newText,
+        });
+      }
+      setIsEdting(false);
+      setEditingText("");
+      setIsSubmitting(false);
+    },
+    [editingText, todo, handleUpdateTodo]
+  );
 
   if (isEditing) {
     return (
-      <ListItem
-        key={labelId}
-        disablePadding
-        secondaryAction={
-          <Stack direction="row" spacing={2}>
-            <IconButton
-              edge="end"
-              aria-label="Completed"
-              color="info"
-              disabled={!editingText || isSubmitting}
-              onClick={() => handleTodoEdited()}
-            >
-              <CheckCircleIcon />
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="Cancel"
-              color="info"
-              disabled={isSubmitting}
-              onClick={() => {
-                setIsEdting(false);
-                setEditingText("");
-              }}
-            >
-              <CancelIcon />
-            </IconButton>
-          </Stack>
-        }
-      >
-        <TextField
-          label="Edit todo content"
-          variant="outlined"
-          size="small"
-          fullWidth
-          value={editingText}
-          disabled={isSubmitting}
-          onChange={(e) => setEditingText(e.target.value)}
-        />
-      </ListItem>
+      <form autoComplete="off" onSubmit={handleEditTodo}>
+        <ListItem
+          key={labelId}
+          disablePadding
+          secondaryAction={
+            <Stack direction="row" spacing={2}>
+              <IconButton
+                edge="end"
+                aria-label="Completed"
+                color="info"
+                disabled={!editingText || isSubmitting}
+                onClick={handleEditTodo}
+              >
+                <CheckCircleIcon />
+              </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="Cancel"
+                color="info"
+                disabled={isSubmitting}
+                onClick={() => {
+                  setIsEdting(false);
+                  setEditingText("");
+                }}
+              >
+                <CancelIcon />
+              </IconButton>
+            </Stack>
+          }
+        >
+          <TextField
+            label="Edit todo content"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={editingText}
+            disabled={isSubmitting}
+            onChange={(e) => setEditingText(e.target.value)}
+          />
+        </ListItem>
+      </form>
     );
   }
 

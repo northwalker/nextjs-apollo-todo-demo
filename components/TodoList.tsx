@@ -61,15 +61,15 @@ interface Todo {
   updatedAt: String;
 }
 
-const LoadingElement = () => {
+const LoadingSkeleton = () => {
   return (
-    <Container maxWidth={"sm"}>
-      <Skeleton animation="wave" height={120} />
-      <Skeleton animation="wave" height={80} />
+    <>
       <Skeleton animation="wave" height={60} />
-      <Skeleton animation="wave" height={48} />
-      <Skeleton animation="wave" height={48} />
-    </Container>
+      <Skeleton animation="wave" height={60} />
+      <Skeleton animation="wave" height={60} />
+      <Skeleton animation="wave" height={60} />
+      <Skeleton animation="wave" height={60} />
+    </>
   );
 };
 
@@ -80,8 +80,9 @@ const TodoList = () => {
   const [createTodo] = useMutation(CREATE_TODO);
   const [updateTodo] = useMutation(UPDATE_TODO);
   const [deleteTodo] = useMutation(DELETE_TODO);
+  const { todos = [] } = data || {};
 
-  const handleOnSubmit = async (e: any) => {
+  const handleOnSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsSubmitting(true);
     await handleCreateTodo();
@@ -131,69 +132,66 @@ const TodoList = () => {
     [deleteTodo, refetch]
   );
 
-  if (loading) {
-    return <LoadingElement />;
-  }
-
   if (error) {
-    return <Container>{!!error && error.message}</Container>;
+    return <Container maxWidth={"sm"}>{error?.message}</Container>;
   }
 
   return (
     <Container maxWidth="sm">
       <h1>Todo List</h1>
-      <div>
-        <form noValidate autoComplete="off" onSubmit={handleOnSubmit}>
-          <Grid
-            container
-            direction="row"
-            // justifyContent="center"
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item xs={8}>
-              <TextField
-                id="standard-basic"
-                autoComplete="off"
-                label="New Todo"
-                variant="standard"
-                fullWidth
-                inputProps={{ maxLength: 1000 }}
-                placeholder="Type something to do..."
-                disabled={isSubmitting}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              />
+      {loading && <LoadingSkeleton />}
+      {!loading && (
+        <>
+          <form autoComplete="off" onSubmit={handleOnSubmit}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              spacing={1}
+            >
+              <Grid item xs={8}>
+                <TextField
+                  id="standard-basic"
+                  autoComplete="off"
+                  label="New Todo"
+                  variant="standard"
+                  fullWidth
+                  inputProps={{ maxLength: 1000 }}
+                  placeholder="Type something to do..."
+                  disabled={isSubmitting}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  aria-label="Add doto"
+                  variant="contained"
+                  onClick={handleOnSubmit}
+                  startIcon={<AddIcon />}
+                  disabled={isSubmitting}
+                >
+                  Add
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <Button
-                aria-label="Add doto"
-                variant="contained"
-                onClick={handleOnSubmit}
-                startIcon={<AddIcon />}
-                disabled={isSubmitting}
-              >
-                Add
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <div>
-        <List>
-          {data?.todos.map((todo: Todo, index: number) => {
-            return (
-              <TodoItem
-                key={index}
-                todo={todo}
-                index={index}
-                handleUpdateTodo={handleUpdateTodo}
-                handleDeleteTodo={handleDeleteTodo}
-              />
-            );
-          })}
-        </List>
-      </div>
+          </form>
+          <List>
+            {todos.map((todo: Todo, index: number) => {
+              return (
+                <TodoItem
+                  key={index}
+                  todo={todo}
+                  index={index}
+                  handleUpdateTodo={handleUpdateTodo}
+                  handleDeleteTodo={handleDeleteTodo}
+                />
+              );
+            })}
+          </List>
+        </>
+      )}
     </Container>
   );
 };
