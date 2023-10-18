@@ -3,25 +3,13 @@ import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   Container,
+  Skeleton,
   Grid,
-  Button,
-  Typography,
   TextField,
+  Button,
   List,
-  // Stack,
-  // ListItem,
-  // ListItemIcon,
-  // ListItemText,
-  // Tooltip,
-  // IconButton,
-  // Checkbox,
 } from "@mui/material";
-
 import AddIcon from "@mui/icons-material/Add";
-// import EditIcon from "@mui/icons-material/Edit";
-// import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-// import CancelIcon from "@mui/icons-material/Cancel";
-// import DeleteIcon from "@mui/icons-material/Delete";
 import TodoItem from "./TodoItem";
 
 const READ_TODO = gql`
@@ -72,6 +60,18 @@ interface Todo {
   createdAt: String;
   updatedAt: String;
 }
+
+const LoadingElement = () => {
+  return (
+    <Container maxWidth={"sm"}>
+      <Skeleton animation="wave" height={120} />
+      <Skeleton animation="wave" height={80} />
+      <Skeleton animation="wave" height={60} />
+      <Skeleton animation="wave" height={48} />
+      <Skeleton animation="wave" height={48} />
+    </Container>
+  );
+};
 
 const TodoList = () => {
   const [text, setText] = useState("");
@@ -131,77 +131,70 @@ const TodoList = () => {
     [deleteTodo, refetch]
   );
 
-  if (loading || error) {
-    return (
-      <div>
-        <Typography variant="h3" component="h3">
-          {loading ? "Loading..." : "Error..."}
-        </Typography>
-        <div>{!!error && error.message}</div>
-      </div>
-    );
+  if (loading) {
+    return <LoadingElement />;
+  }
+
+  if (error) {
+    return <Container>{!!error && error.message}</Container>;
   }
 
   return (
-    <div>
-      <Container maxWidth="sm">
-        <Typography variant="h1" component="h1">
-          Todo List
-        </Typography>
-        <div>
-          <form noValidate autoComplete="off" onSubmit={handleOnSubmit}>
-            <Grid
-              container
-              direction="row"
-              // justifyContent="center"
-              alignItems="center"
-              spacing={1}
-            >
-              <Grid item xs={8}>
-                <TextField
-                  id="standard-basic"
-                  autoComplete="off"
-                  label="New Todo"
-                  variant="standard"
-                  fullWidth
-                  inputProps={{ maxLength: 1000 }}
-                  placeholder="Type something to do..."
-                  disabled={isSubmitting}
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Button
-                  aria-label="Add doto"
-                  variant="contained"
-                  onClick={handleOnSubmit}
-                  startIcon={<AddIcon />}
-                  disabled={isSubmitting}
-                >
-                  Add
-                </Button>
-              </Grid>
+    <Container maxWidth="sm">
+      <h1>Todo List</h1>
+      <div>
+        <form noValidate autoComplete="off" onSubmit={handleOnSubmit}>
+          <Grid
+            container
+            direction="row"
+            // justifyContent="center"
+            alignItems="center"
+            spacing={1}
+          >
+            <Grid item xs={8}>
+              <TextField
+                id="standard-basic"
+                autoComplete="off"
+                label="New Todo"
+                variant="standard"
+                fullWidth
+                inputProps={{ maxLength: 1000 }}
+                placeholder="Type something to do..."
+                disabled={isSubmitting}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
             </Grid>
-          </form>
-        </div>
-        <div>
-          <List>
-            {data?.todos.map((todo: Todo, index: number) => {
-              return (
-                <TodoItem
-                  key={index}
-                  todo={todo}
-                  index={index}
-                  handleUpdateTodo={handleUpdateTodo}
-                  handleDeleteTodo={handleDeleteTodo}
-                />
-              );
-            })}
-          </List>
-        </div>
-      </Container>
-    </div>
+            <Grid item xs={4}>
+              <Button
+                aria-label="Add doto"
+                variant="contained"
+                onClick={handleOnSubmit}
+                startIcon={<AddIcon />}
+                disabled={isSubmitting}
+              >
+                Add
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <div>
+        <List>
+          {data?.todos.map((todo: Todo, index: number) => {
+            return (
+              <TodoItem
+                key={index}
+                todo={todo}
+                index={index}
+                handleUpdateTodo={handleUpdateTodo}
+                handleDeleteTodo={handleDeleteTodo}
+              />
+            );
+          })}
+        </List>
+      </div>
+    </Container>
   );
 };
 

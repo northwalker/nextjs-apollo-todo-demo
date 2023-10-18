@@ -1,9 +1,10 @@
 import dbConnect from "../lib/dbConnect";
+import { useEffect } from "react";
 import gql from "graphql-tag";
 import { initializeApollo } from "../apollo/client";
-import TodoList from "../components/TodoList";
 import Head from "next/head";
-import { useEffect } from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import TodoList from "../components/TodoList";
 
 const READ_TODO = gql`
   query {
@@ -17,7 +18,7 @@ const READ_TODO = gql`
   }
 `;
 
-const init = async () => {
+const fetchData = async () => {
   const apolloClient = initializeApollo();
   await apolloClient.query({
     query: READ_TODO,
@@ -26,7 +27,7 @@ const init = async () => {
 
 const IndexPage = () => {
   useEffect(() => {
-    init();
+    fetchData();
   }, []);
 
   return (
@@ -36,12 +37,13 @@ const IndexPage = () => {
         <meta property="og:title" content="Todo Demo" key="title" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+      <CssBaseline />
       <TodoList />
     </div>
   );
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   await dbConnect();
 
   // const apolloClient = initializeApollo();
