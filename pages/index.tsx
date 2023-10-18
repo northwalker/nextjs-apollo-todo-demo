@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { initializeApollo } from "../apollo/client";
 import TodoList from "../components/TodoList";
 import Head from "next/head";
+import { useEffect } from "react";
 
 const READ_TODO = gql`
   query {
@@ -16,7 +17,18 @@ const READ_TODO = gql`
   }
 `;
 
+const init = async () => {
+  const apolloClient = initializeApollo();
+  await apolloClient.query({
+    query: READ_TODO,
+  });
+};
+
 const IndexPage = () => {
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <div>
       <Head>
@@ -29,18 +41,22 @@ const IndexPage = () => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   await dbConnect();
 
-  const apolloClient = initializeApollo();
-  await apolloClient.query({
-    query: READ_TODO,
-  });
+  // const apolloClient = initializeApollo();
+  // await apolloClient.query({
+  //   query: READ_TODO,
+  // });
+
+  // return {
+  //   props: {
+  //     initialApolloState: apolloClient.cache.extract(),
+  //   },
+  // };
 
   return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
+    props: {},
   };
 }
 
