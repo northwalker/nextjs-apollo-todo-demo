@@ -1,7 +1,8 @@
 import dbConnect from "../lib/dbConnect";
 import gql from "graphql-tag";
 import { initializeApollo } from "../apollo/client";
-import Todos from "../components/Todos";
+import TodoList from "../components/TodoList";
+import Head from "next/head";
 
 const READ_TODO = gql`
   query {
@@ -15,15 +16,20 @@ const READ_TODO = gql`
   }
 `;
 
-const Index = () => {
+const IndexPage = () => {
   return (
     <div>
-      <Todos />
+      <Head>
+        <title>Todo Demo</title>
+        <meta property="og:title" content="Todo Demo" key="title" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <TodoList />
     </div>
   );
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   await dbConnect();
 
   const apolloClient = initializeApollo();
@@ -38,4 +44,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default Index;
+export default IndexPage;
