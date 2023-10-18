@@ -22,6 +22,8 @@ jobs:
       # - name: Test
       #   run: npm run test
       - name: Build
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: npm run build
       - name: Step Summary
         run: echo "### Github Acitons done! :rocket:" >> $GITHUB_STEP_SUMMARY
