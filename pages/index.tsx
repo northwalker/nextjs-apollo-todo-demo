@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import gql from "graphql-tag";
 import { initializeApollo } from "../apollo/client";
 import Head from "next/head";
-import CssBaseline from "@mui/material/CssBaseline";
 import TodoList from "../components/TodoList";
 
 const READ_TODO = gql`
@@ -34,10 +33,18 @@ const IndexPage = () => {
     <div>
       <Head>
         <title>Todo Demo</title>
-        <meta property="og:title" content="Todo Demo" key="title" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta property="og:title" content="Todo Demo" key="title" />
+        <meta
+          property="og:description"
+          content="TODO CRUD demo with Typescript Nextjs, Apollo GraphQL, mongoose MongoDB and material UI design library MUI."
+        />
+        <meta name="title" content="Todo Demo" />
+        <meta
+          name="description"
+          content="TODO CRUD demo with Typescript Nextjs, Apollo GraphQL, mongoose MongoDB and material UI design library MUI."
+        />
       </Head>
-      <CssBaseline />
       <TodoList />
     </div>
   );

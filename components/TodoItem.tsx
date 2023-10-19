@@ -23,12 +23,12 @@ interface Todo {
   updatedAt: String;
 }
 
-type Props = {
+interface Props {
   todo: Todo;
   index: number;
   handleUpdateTodo: Function;
   handleDeleteTodo: Function;
-};
+}
 
 const TodoItem = ({
   todo,

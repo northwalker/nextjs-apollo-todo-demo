@@ -1,8 +1,7 @@
-TODO CRUD demo with Nextjs, Apollo GraphQL, MongoDB and mongoose.
+TODO CRUD demo with Typescript Nextjs, Apollo GraphQL, mongoose MongoDB and material UI design library MUI.
+Clone repo from [api-routes-apollo-server-and-client](https://github.com/vercel/next.js/tree/canary/examples/api-routes-apollo-server-and-client)
 
-Clone from [api-routes-apollo-server-and-client](https://github.com/vercel/next.js/tree/canary/examples/api-routes-apollo-server-and-client)
-
-Demo: [https://nextjs-apollo-todo-demo.vercel.app/](https://nextjs-apollo-todo-demo.vercel.app/)
+Online demo: [https://nextjs-apollo-todo-demo.vercel.app/](https://nextjs-apollo-todo-demo.vercel.app/)
 
 # Apollo Server and Client Example
 

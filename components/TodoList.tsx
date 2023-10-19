@@ -139,58 +139,57 @@ const TodoList = () => {
   return (
     <Container maxWidth="sm">
       <h1>Todo List</h1>
+      <form autoComplete="off" onSubmit={handleOnSubmit}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+        >
+          <Grid item xs={8}>
+            <TextField
+              id="standard-basic"
+              autoComplete="off"
+              label="New Todo"
+              variant="standard"
+              fullWidth
+              inputProps={{ maxLength: 1000 }}
+              placeholder="Type something to do..."
+              disabled={isSubmitting || loading}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              aria-label="Add doto"
+              variant="contained"
+              onClick={handleOnSubmit}
+              startIcon={<AddIcon />}
+              disabled={isSubmitting || loading}
+            >
+              Add
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+
       {loading && <LoadingSkeleton />}
       {!loading && (
-        <>
-          <form autoComplete="off" onSubmit={handleOnSubmit}>
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              spacing={1}
-            >
-              <Grid item xs={8}>
-                <TextField
-                  id="standard-basic"
-                  autoComplete="off"
-                  label="New Todo"
-                  variant="standard"
-                  fullWidth
-                  inputProps={{ maxLength: 1000 }}
-                  placeholder="Type something to do..."
-                  disabled={isSubmitting}
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Button
-                  aria-label="Add doto"
-                  variant="contained"
-                  onClick={handleOnSubmit}
-                  startIcon={<AddIcon />}
-                  disabled={isSubmitting}
-                >
-                  Add
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-          <List>
-            {todos.map((todo: Todo, index: number) => {
-              return (
-                <TodoItem
-                  key={index}
-                  todo={todo}
-                  index={index}
-                  handleUpdateTodo={handleUpdateTodo}
-                  handleDeleteTodo={handleDeleteTodo}
-                />
-              );
-            })}
-          </List>
-        </>
+        <List>
+          {todos.map((todo: Todo, index: number) => {
+            return (
+              <TodoItem
+                key={index}
+                todo={todo}
+                index={index}
+                handleUpdateTodo={handleUpdateTodo}
+                handleDeleteTodo={handleDeleteTodo}
+              />
+            );
+          })}
+        </List>
       )}
     </Container>
   );
